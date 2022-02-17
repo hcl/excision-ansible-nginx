@@ -2,3 +2,5 @@
 nginx_packages:
   - nginx
   - cyrus-sasl--ldap
+
+nginx_extra_site_configs: []
