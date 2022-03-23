@@ -3,3 +3,8 @@
   service:
     name: nginx
     state: restarted
+
+- name: restart nginx-ldap-auth service
+  service:
+    name: nginx_ldap_auth
+    state: restarted
