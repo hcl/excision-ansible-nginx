@@ -60,7 +60,7 @@
     mode: 755
     owner: root
     group: wheel
-  notify: restart nginx-ldap-auth service
+#  notify: restart nginx-ldap-auth service
 
 # - name: enable nginx-ldap-auth service
 #   service:
