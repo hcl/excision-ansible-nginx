@@ -62,11 +62,11 @@
     group: wheel
   notify: restart nginx-ldap-auth service
 
-- name: enable nginx-ldap-auth service
-  service:
-    name: nginx_ldap_auth
-    state: started
-    enabled: true
+# - name: enable nginx-ldap-auth service
+#   service:
+#     name: nginx_ldap_auth
+#     state: started
+#     enabled: true
 
 - name: create site configs
   template:
