@@ -50,23 +50,32 @@
 
 - name: setup nginx-ldap-auth
   git:
-    repo: https://github.com/nginxinc/nginx-ldap-auth
+    repo: https://github.com/Excision-Mail/nginx-ldap-auth
     dest: '/usr/local/libexec/nginx-ldap-auth'
+    version: '{{ nginx_ldap_auth_version }}'
 
-- name: create nginx-ldap-auth service
-  copy:
-    src: nginx_ldap_auth
-    dest: /etc/rc.d/nginx_ldap_auth
-    mode: 755
+- name: create nginx-ldap-auth launcher
+  template:
+    src: nginx_ldap_auth-launcher.j2
+    dest: /usr/local/libexec/nginx_ldap_auth-launcher
     owner: root
     group: wheel
-#  notify: restart nginx-ldap-auth service
+    mode: '0755'
 
-# - name: enable nginx-ldap-auth service
-#   service:
-#     name: nginx_ldap_auth
-#     state: started
-#     enabled: true
+- name: create nginx-ldap-auth service
+  template:
+    src: nginx_ldap_auth.j2
+    dest: /etc/rc.d/nginx_ldap_auth
+    mode: '0755'
+    owner: root
+    group: wheel
+  notify: restart nginx-ldap-auth service
+
+- name: enable nginx-ldap-auth service
+  service:
+    name: nginx_ldap_auth
+    state: started
+    enabled: true
 
 - name: create site configs
   template:
@@ -77,16 +86,6 @@
     mode: '0644'
   notify: restart nginx
   with_items: "{{ lookup('fileglob', '../templates/sites-available/*.conf.j2') }}"
-
-- name: create extra site configs
-  template:
-    src: "{{ item }}"
-    dest: "/etc/nginx/sites-available/{{ item | basename | regex_replace('\\.j2$', '') }}"
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: restart nginx
-  with_items: '{{ nginx_extra_site_configs }}'
 
 - name: start and enable nginx
   service:

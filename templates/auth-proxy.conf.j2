@@ -13,4 +13,4 @@ proxy_set_header X-Ldap-BindDN   "{{ nginx_ldap_binddn }}";
 proxy_set_header X-Ldap-BindPass "{{ nginx_ldap_bindpw }}";
 proxy_set_header X-CookieName "nginxauth";
 proxy_set_header Cookie nginxauth=$cookie_nginxauth;
-proxy_set_header X-Ldap-Template "{{ nginx_ldap_filter }}";
+#proxy_set_header X-Ldap-Template "<< change me >>";
