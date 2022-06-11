@@ -4,13 +4,23 @@
     name: '{{ nginx_packages }}'
     state: present
 
-- name: set up /var/www/tmp
+- name: set up /var/www/ directories
   file:
-    path: /var/www/tmp
+    path: "/var/www/{{ item }}"
     state: directory
-    mode: '0777'
-    owner: www
-    group: www
+    mode: '0755'
+    owner: root
+    group: wheel
+  with_items: ["var", "var/run"]
+
+- name: create /var/www/var/www -> /var/www symlink
+  file:
+    state: link
+    src: '..'
+    path: '/var/www/var/www'
+    owner: root
+    group: wheel
+    mode: '0755'
 
 - name: create nginx directories
   file:
