@@ -49,16 +49,6 @@
   notify: restart nginx
   with_items: "{{ lookup('fileglob', '../templates/sites-available/*.conf.j2') }}"
 
-- name: create extra site configs
-  template:
-    src: "{{ item }}"
-    dest: "/etc/nginx/sites-available/{{ item | basename | regex_replace('\\.j2$', '') }}"
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: restart nginx
-  with_items: '{{ nginx_extra_site_configs }}'
-
 - name: start and enable nginx
   service:
     name: nginx
